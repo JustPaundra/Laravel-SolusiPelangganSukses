@@ -23,22 +23,47 @@ class AnalisaController extends Controller
 
     public function store(Request $request)
     {
+        // $request->validate([
+        //     'pemesan' => 'required',
+        //     'sektor' => 'required',
+        //     'skor_kepuasan' => 'required|integer',
+        //     'skor_customer_effort' => 'required|integer',
+        //     'foto_bukti' => 'nullable|image',
+        // ]);
+
+        // $path = $request->file('foto_bukti');
+        //  ? $request->file('foto_bukti')->store('uploads', 'public') : null;
+
+        // AnalisaKepuasan::create([
+        //     'pemesan' => $request->pemesan,
+        //     'sektor' => $request->sektor,
+        //     'skor_kepuasan' => $request->skor_kepuasan,
+        //     'skor_customer_effort' => $request->skor_customer_effort,
+        //     'foto_bukti' => $path,
+        // ]);
+
+        // return redirect()->route('analisa_kepuasan.index');
+
         $request->validate([
             'pemesan' => 'required',
             'sektor' => 'required',
             'skor_kepuasan' => 'required|integer',
             'skor_customer_effort' => 'required|integer',
-            'foto_bukti' => 'nullable|image',
+            'foto_bukti' => 'required|file|mimes:png,jpg,jpeg|max:2048',
         ]);
 
-        $path = $request->file('foto_bukti') ? $request->file('foto_bukti')->store('uploads', 'public') : null;
+        $gambar = $request->file('foto_bukti');
+        $nama_gambar = time() . '_' . $gambar->getClientOriginalName();
+        $tujuan_upload = 'image';
+
+        $gambar->move($tujuan_upload, $nama_gambar);
 
         AnalisaKepuasan::create([
             'pemesan' => $request->pemesan,
             'sektor' => $request->sektor,
             'skor_kepuasan' => $request->skor_kepuasan,
             'skor_customer_effort' => $request->skor_customer_effort,
-            'foto_bukti' => $path,
+            'foto_bukti' => $nama_gambar,
         ]);
 
         return redirect()->route('analisa_kepuasan.index');

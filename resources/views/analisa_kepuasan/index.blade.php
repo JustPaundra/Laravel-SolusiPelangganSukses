@@ -31,7 +31,7 @@
                     <td>{{ $analisa->sektor }}</td>
                     <td>
                         @if ($analisa->foto_bukti)
-                        <img src="{{ asset('storage/'.$analisa->foto_bukti) }}" alt="Foto bukti" style="width: 100px;">
+                        <img src="{{ asset('image/'.$analisa->foto_bukti) }}" alt="Foto bukti" style="width: 100px;">
                         @else
                         Tidak ada foto
                         @endif
